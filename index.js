@@ -10,40 +10,47 @@ const defaultOptions = {
   }
 }
 
-function bufferStream (limit, options = {}) {
-  options = Object.assign({}, defaultOptions, options)
-  let emitted = 0
+class BufferStream extends Readable {
+  constructor (limit, options) {
+    super()
 
-  class BufferStream extends Readable {
-    _read () {
-      const nextLength = emitted + options.chunkSize
-      let nextChunkSize = options.chunkSize
-
-      if (nextLength > limit) {
-        nextChunkSize = limit - emitted
-      }
-
-      options.generator(nextChunkSize, (err, bytes) => {
-        if (err) {
-          this.emit('error', err)
-          return
-        }
-
-        bytes = bytes.slice(0, nextChunkSize)
-
-        emitted += nextChunkSize
-
-        this.push(bytes)
-
-        if (nextLength > limit) {
-          // we've finished, end the stream
-          this.push(null)
-        }
-      })
-    }
+    this.limit = limit
+    this.options = options
+    this.emitted = 0
   }
 
-  return new BufferStream()
+  _read () {
+    const nextLength = this.emitted + this.options.chunkSize
+    let nextChunkSize = this.options.chunkSize
+
+    if (nextLength > this.limit) {
+      nextChunkSize = this.limit - this.emitted
+    }
+
+    this.options.generator(nextChunkSize, (err, bytes) => {
+      if (err) {
+        this.emit('error', err)
+        return
+      }
+
+      bytes = bytes.slice(0, nextChunkSize)
+
+      this.emitted += nextChunkSize
+
+      this.push(bytes)
+
+      if (nextLength > this.limit) {
+        // we've finished, end the stream
+        this.push(null)
+      }
+    })
+  }
+}
+
+const bufferStream = (limit, options = {}) => {
+  options = Object.assign({}, defaultOptions, options)
+
+  return new BufferStream(limit, options)
 }
 
 module.exports = bufferStream
