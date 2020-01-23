@@ -1,6 +1,6 @@
 'use strict'
 
-const randomBytes = require('random-bytes')
+const randomBytes = require('randombytes')
 const Readable = require('stream').Readable
 
 const defaultOptions = {

@@ -28,7 +28,7 @@
     "standard": "^12.0.1"
   },
   "dependencies": {
-    "random-bytes": "^1.0.0",
+    "randombytes": "^2.1.0",
     "readable-stream": "^3.5.0"
   }
 }
