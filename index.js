@@ -1,13 +1,11 @@
 'use strict'
 
-const crypto = require('crypto')
+const randomBytes = require('random-bytes')
 const Readable = require('stream').Readable
 
 const defaultOptions = {
   chunkSize: 4096,
-  generator: (size, callback) => {
-    callback(null, crypto.randomBytes(size))
-  }
+  generator: randomBytes
 }
 
 class BufferStream extends Readable {
