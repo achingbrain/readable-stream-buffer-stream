@@ -1,6 +1,6 @@
 {
   "name": "readable-stream-buffer-stream",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "A readable stream that emits buffers containing bytes up to a certain length",
   "main": "index.js",
   "browser": {
