@@ -1,5 +1,5 @@
-import bufferStream from './'
-import test from 'ava'
+const bufferStream = require('./')
+const test = require('ava')
 
 test.cb('Should emit bytes', (t) => {
   const expected = 100
